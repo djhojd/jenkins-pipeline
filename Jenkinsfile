@@ -6,10 +6,27 @@ pipeline {
     
   }
   stages {
-    stage('Server') {
-      steps {
-        sh '''echo "Building server..."
+    stage('Tests') {
+      parallel {
+        stage('Server') {
+          steps {
+            sh '''echo "Building server..."
 mvn --version'''
+          }
+        }
+        stage('Client') {
+          agent {
+            docker {
+              image 'node:6-slim'
+            }
+            
+          }
+          steps {
+            echo 'Client...'
+            sh '''node -v
+npm -v'''
+          }
+        }
       }
     }
   }
