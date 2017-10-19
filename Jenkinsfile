@@ -1,14 +1,15 @@
 pipeline {
-  agent {
-    docker {
-      image 'maven:3-alpine'
-    }
-    
-  }
+  agent any
   stages {
     stage('Tests') {
       parallel {
         stage('Server') {
+          agent {
+            docker {
+              image 'maven:3-alpine'
+            }
+            
+          }
           steps {
             sh '''echo "Building server..."
 mvn --version'''
